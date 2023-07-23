@@ -1,12 +1,23 @@
 import cherio from "cherio";
 import chalk from "chalk";
+import express from "express";
+import cors from "cors";
 import fs from "fs";
 import { getPageContent } from "./helpers/puppeteer.js";
 
-const URL = "https://www.nn-airport.kz/flight-status";
+const app = express();
+const port = 3030;
+const outputFilePath = "./data/output.json";
 
-(async function main() {
+app.use(cors());
+
+if (fs.existsSync(outputFilePath)) {
+  fs.unlinkSync(outputFilePath);
+}
+
+app.get("/", async (req, res) => {
   try {
+    const URL = "https://www.nn-airport.kz/flight-status";
     const content = await getPageContent(URL);
 
     const cleanedContent = content.replace(
@@ -15,12 +26,9 @@ const URL = "https://www.nn-airport.kz/flight-status";
     );
 
     const $ = cherio.load(cleanedContent);
-
-    console.log($);
-
     const flights = [];
 
-    $("tr[data-id]").each((element) => {
+    $("tr[data-id]").each((index, element) => {
       const $row = $(element);
       const flightId = $row.attr("data-id");
       const flightNumber = $row.find("td:nth-child(1)").text();
@@ -47,10 +55,19 @@ const URL = "https://www.nn-airport.kz/flight-status";
 
     const jsonData = JSON.stringify(flights, null, 2);
 
-    fs.writeFileSync("./data/output.json", jsonData);
+    fs.writeFileSync(outputFilePath, jsonData);
 
-    console.log(chalk.green("JSON data has been successfully saved."));
+    res.json(flights);
+    console.log(chalk.greenBright("Sent data to frontend:)"));
+
+    fs.unlinkSync(outputFilePath);
+    console.log();
   } catch (err) {
     console.log(chalk.red("Error: ", err));
+    res.status(500).json({ error: "Something went wrong" });
   }
-})();
+});
+
+app.listen(port, () => {
+  console.log(chalk.green(`node.js server started on port  ${port}`));
+});
