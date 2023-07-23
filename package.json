@@ -1,0 +1,21 @@
+{
+  "name": "nqz-scrapper",
+  "version": "1.0.0",
+  "description": "NQZ Airport schedule scrapper",
+  "main": "index.js",
+  "author": "Sergei Artemenko",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/helper-plugin-utils": "^7.22.5",
+    "@babel/node": "^7.22.6",
+    "chalk": "^5.3.0",
+    "cherio": "^1.0.0-rc.2",
+    "puppeteer": "^20.9.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
