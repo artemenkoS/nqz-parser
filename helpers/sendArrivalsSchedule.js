@@ -49,6 +49,6 @@ export async function sendArrivalsSchedule(req, res) {
     console.log(chalk.green("Schedule sent successfully"));
   } catch (err) {
     console.log(chalk.red("Error: ", err));
-    res.status(500).json({ error: "Something went wrong" }, error);
+    res.status(500).json({ error: "Something went wrong" }, err);
   }
 }
