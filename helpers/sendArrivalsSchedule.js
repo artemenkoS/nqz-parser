@@ -2,7 +2,7 @@ import cherio from "cherio";
 import chalk from "chalk";
 import { getPageContent } from "./puppeteer.js";
 import { getAirlineName } from "./getAirlineName.js";
-import { AIRLINE_NAMES, URL } from "../constants.js";
+import { URL } from "../constants.js";
 
 export async function sendArrivalsSchedule(req, res) {
   try {

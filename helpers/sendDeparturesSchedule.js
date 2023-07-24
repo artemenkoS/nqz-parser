@@ -2,13 +2,12 @@ import cherio from "cherio";
 import chalk from "chalk";
 import { getPageContent } from "./puppeteer.js";
 import { getAirlineName } from "./getAirlineName.js";
-import { AIRLINE_NAMES } from "../constants.js";
+import { URL } from "../constants.js";
 
 const departuresTable = "departuresTable";
 
 export async function sendDeparturesSchedule(req, res) {
   try {
-    const URL = "https://www.nn-airport.kz/flight-status";
     const content = await getPageContent(URL);
 
     const $ = cherio.load(content);
