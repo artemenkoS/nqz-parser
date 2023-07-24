@@ -20,6 +20,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(chalk.green(`node.js server started on port ${port}`));
 });
