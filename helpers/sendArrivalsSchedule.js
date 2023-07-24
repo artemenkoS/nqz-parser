@@ -1,6 +1,7 @@
 import cherio from "cherio";
 import chalk from "chalk";
 import { getPageContent } from "./puppeteer.js";
+import { getAirlineName } from "./getAirlineName.js";
 import { AIRLINE_NAMES, URL } from "../constants.js";
 
 export async function sendArrivalsSchedule(req, res) {
@@ -17,17 +18,7 @@ export async function sendArrivalsSchedule(req, res) {
       const flightNumber = $row.find("td:nth-child(1)").text();
       const airlineCode = flightNumber.split(" ")[0];
 
-      let airline = "";
-      if (airlineCode in AIRLINE_NAMES) {
-        const flightNumberLength = flightNumber.split(" ")[1].length;
-        if (typeof AIRLINE_NAMES[airlineCode] === "object") {
-          airline = AIRLINE_NAMES[airlineCode][flightNumberLength] || "Unknown";
-        } else {
-          airline = AIRLINE_NAMES[airlineCode];
-        }
-      } else {
-        airline = "Unknown";
-      }
+      let airline = getAirlineName(flightNumber);
 
       const destination = $row.find("td:nth-child(2)").text();
       const scheduledDeparture = $row.find("td:nth-child(4)").text();
