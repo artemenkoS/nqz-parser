@@ -6,7 +6,7 @@ import { sendArrivalsSchedule } from "./helpers/sendArrivalsSchedule.js";
 import { sendDeparturesSchedule } from "./helpers/sendDeparturesSchedule.js";
 
 const app = express();
-const port = 3030;
+const port = process.env.PORT || 3030;
 
 app.use(cors());
 
@@ -20,6 +20,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || port, () => {
+app.listen(port, () => {
   console.log(chalk.green(`node.js server started on port ${port}`));
 });

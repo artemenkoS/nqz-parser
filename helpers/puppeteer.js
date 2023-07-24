@@ -9,6 +9,10 @@ export const LAUNCH_PUPPETEER_OPTS = {
     "--disable-gpu",
     "--window-size=1920x1080",
   ],
+  executablePath:
+    process.env.NODE_ENV === "production"
+      ? process.env.PUPPETEER_EXECUTABLE_PATH
+      : puppeteer.executablePath(),
 };
 export const PAGE_PUPPETEER_OPTS = {
   networkIdle2Timeout: 5000,
