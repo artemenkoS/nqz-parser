@@ -10,9 +10,16 @@ const port = process.env.PORT || 3030;
 
 app.use(cors());
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
   const now = new Date();
-  console.log(`Incoming request for: ${req.url} at ${now.toLocaleString()}`);
+  const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const clientPort = req.headers["x-forwarded-port"] || req.socket.remotePort;
+
+  console.log(
+    chalk.blue(
+      `Incoming request from ${clientIp}:${clientPort} at ${now.toLocaleString()}`
+    )
+  );
   next();
 });
 
