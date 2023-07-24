@@ -2,18 +2,12 @@ import cherio from "cherio";
 import chalk from "chalk";
 import express from "express";
 import cors from "cors";
-import fs from "fs";
 import { getPageContent } from "./helpers/puppeteer.js";
 
 const app = express();
 const port = 3030;
-const outputFilePath = "./data/output.json";
 
 app.use(cors());
-
-if (fs.existsSync(outputFilePath)) {
-  fs.unlinkSync(outputFilePath);
-}
 
 app.get("/", async (req, res) => {
   try {
@@ -30,6 +24,7 @@ app.get("/", async (req, res) => {
 
     $("tr[data-id]").each((index, element) => {
       const $row = $(element);
+
       const flightId = $row.attr("data-id");
       const flightNumber = $row.find("td:nth-child(1)").text();
       const airline = $row.find("td:nth-child(2)").text().trim();
@@ -37,34 +32,31 @@ app.get("/", async (req, res) => {
       const scheduledDeparture = $row.find("td:nth-child(5)").text();
       const actualDeparture = $row.find("td:nth-child(6)").text();
       const status = $row.find("td:nth-child(7)").text();
-      const terminal = $row.find("td:nth-child(8)").text();
 
       const flightInfo = {
-        flightId,
-        flightNumber,
-        airline: airline,
-        destination: destination.trim(),
-        scheduledDeparture,
-        actualDeparture,
-        status,
-        terminal,
+        id: flightId,
+        airlineName: airline,
+        flightNumber: flightNumber,
+        path: {
+          origin: {
+            originRu: destination,
+          },
+          destination: { destinationRu: destination },
+        },
+        stad: scheduledDeparture,
+        etad: actualDeparture,
+        remark: { remarkRu: status },
+        gate: null,
       };
 
       flights.push(flightInfo);
     });
-
-    const jsonData = JSON.stringify(flights, null, 2);
-
-    fs.writeFileSync(outputFilePath, jsonData);
-
-    res.json(flights);
-    console.log(chalk.greenBright("Sent data to frontend:)"));
-
-    fs.unlinkSync(outputFilePath);
-    console.log();
+    const jsonData = { data: { flights } };
+    res.json(jsonData);
+    console.log(chalk.green("Schedule sent succesfuly"));
   } catch (err) {
     console.log(chalk.red("Error: ", err));
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: "Something went wrong" }, error);
   }
 });
 
