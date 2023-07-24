@@ -17,6 +17,12 @@ export const AIRLINE_NAMES = {
   HY: "Uzbekistan Airways",
   CZ: "China Southern Airlines",
   B2: "Belavia",
+  "5W": "Wizz Air",
+  XC: "Corendon Airlines",
+  "4M": "Latam Airlines",
+  FV: "Rossiya",
+  PC: "Pegasus Airlines",
+  LO: "LOT",
 };
 
 export const URL = "https://www.nn-airport.kz/flight-status";
