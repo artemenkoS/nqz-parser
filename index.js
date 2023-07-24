@@ -10,6 +10,12 @@ const port = process.env.PORT || 3030;
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  const now = new Date();
+  console.log(`Incoming request for: ${req.url} at ${now.toLocaleString()}`);
+  next();
+});
+
 app.get("/", async (req, res) => {
   const flightLeg = req.query.flightLeg;
 
