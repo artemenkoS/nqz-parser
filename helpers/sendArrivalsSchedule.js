@@ -46,7 +46,7 @@ export async function sendArrivalsSchedule(req, res) {
 
     const jsonData = { data: { flights } };
     res.json(jsonData);
-    console.log(chalk.green("Schedule sent successfully"));
+    console.log("Schedule sent successfully");
   } catch (err) {
     console.log(chalk.red("Error: ", err));
     res.status(500).json({ error: "Something went wrong" });
