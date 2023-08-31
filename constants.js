@@ -24,6 +24,7 @@ export const AIRLINE_NAMES = {
   PC: "Pegasus Airlines",
   LO: "LOT",
   YC: "Yamal Airlines",
+  SM: "Air Cairo",
 };
 
 export const URL = "https://www.nn-airport.kz/flight-status";
